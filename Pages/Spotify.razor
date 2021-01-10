@@ -1,0 +1,33 @@
+﻿@page "/spotify"
+@using SpotifyTest.Services
+@using SpotifyTest.Models
+@inject SpotifyService spotifyService
+
+<h3>Spotify songs</h3>
+
+@if (eminemAlbums == null)
+{
+    <button class="btn-dark" @onclick="TryGetSongs">Get spotify songs</button>
+}
+else
+{
+    <ul>
+        @foreach (var albums in eminemAlbums.Albums.Items)
+        {
+            <li>
+                <img src="@albums.Images.Last().Url" />
+                <label>@albums.Name</label>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    private SearchResult eminemAlbums;
+
+    private async Task TryGetSongs()
+    {
+        eminemAlbums = await spotifyService.GetEminemAlbums();
+
+    }
+}
